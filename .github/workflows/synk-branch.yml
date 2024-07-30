@@ -1,4 +1,4 @@
-name: Sync with Project A
+name: Sync Develop Branch
 
 on:
   push:
@@ -8,26 +8,21 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Project A
+      - name: Checkout code
         uses: actions/checkout@v2
         with:
-          repository: DimonONE/test1
-          token: ${{ secrets.GITHUB_TOKEN }}
           ref: develop
-      - name: Prevent loop by checking commit message
+
+      - name: Set up Git
         run: |
-          # Проверка последнего коммита на наличие метки "[skip-sync]"
-          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
-          echo "Last commit message: $LAST_COMMIT_MSG"
-          if [[ "$LAST_COMMIT_MSG" == *"[skip-sync]"* ]]; then
-            echo "Skipping sync to avoid loop."
-            exit 0
-          fi
-      - name: Sync with Project B
+          git config --global user.name "Test2"
+          git config --global user.email "your-email2@example.com"
+
+      - name: Push to another repository
         run: |
-          git remote set-url origin https://github.com/DimonONE/test2
-          git fetch origin develop
-          git checkout develop
-          git merge origin/develop --no-ff
-          git push origin develop
+          git remote add destination https://github.com/DimonONE/test2.git
+          git push destination develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
