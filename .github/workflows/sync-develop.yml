@@ -1,0 +1,32 @@
+name: Sync Develop to Test2
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Add remote for test2
+        run: |
+          git remote add test2 https://github.com/DimonONE/test2.git
+
+      - name: Push changes to test2
+        run: |
+          git fetch test2
+          git checkout develop
+          git merge origin/develop
+          git push test2 develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
