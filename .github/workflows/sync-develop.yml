@@ -20,8 +20,7 @@ jobs:
 
       - name: Add remote for test2
         run: |
-          git remote add test2 https://github.com/DimonONE/test2.git
-
+          git remote add test2 https://x-access-token:${{ secrets.PAT }}@github.com/DimonONE/test2.git
       - name: Push changes to test2
         run: |
           git fetch test2
