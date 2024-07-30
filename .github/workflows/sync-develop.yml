@@ -1,4 +1,4 @@
-name: Sync Develop to Test2
+name: Sync Develop to Test1
 
 on:
   push:
